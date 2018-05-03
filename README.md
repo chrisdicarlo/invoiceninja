@@ -47,6 +47,7 @@ The self-host zip includes all third party libraries whereas downloading the cod
 
 ## Third Party Modules
 * [Event Scheduler](https://github.com/cytech/Scheduler-InvoiceNinja)
+* [Manufacturer Details](https://github.com/dicarlosystems/Manufacturer-InvoiceNinja)
 
 > Feel free to email us for help if you're working on a module, we're happy to provide developer support.
 
@@ -59,7 +60,7 @@ The self-host zip includes all third party libraries whereas downloading the cod
 * [Some Techie](https://www.sometechie.com/customize-invoice-ninja/)
 
 ## Contributing
-All contributors are welcome!  
+All contributors are welcome!
 For information on how contribute to Invoice Ninja, please see our [contributing guide](CONTRIBUTING.md).
 
 ## Credits
@@ -78,5 +79,5 @@ For information on how contribute to Invoice Ninja, please see our [contributing
 * [Matthieu Calie](https://github.com/Matth--)
 
 ## License
-Invoice Ninja is released under the Attribution Assurance License.  
+Invoice Ninja is released under the Attribution Assurance License.
 See [LICENSE](LICENSE) for details.
