@@ -2853,6 +2853,11 @@ $LANG = array(
     'install_module' => 'Install Module',
     'install_module_successful' => 'Successfully installed module :name.',
 
+    // Module install
+    'install' => 'Install',
+    'install_module' => 'Install Module',
+    'install_module_successful' => 'Successfully installed module :name.',
+
 );
 
 return $LANG;
