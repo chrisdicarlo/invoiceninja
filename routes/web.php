@@ -334,6 +334,7 @@ Route::group([
     Route::post('settings/cancel_account', 'AccountController@cancelAccount');
     Route::post('settings/purge_data', 'AccountController@purgeData');
     Route::post('settings/company_details', 'AccountController@updateDetails');
+    Route::post('settings/install_module', 'AccountController@installModule');
     Route::post('settings/{section?}', 'AccountController@doSection');
     Route::post('remove_logo', 'AccountController@removeLogo');
 
@@ -367,6 +368,8 @@ Route::group([
     //Route::get('self-update', 'SelfUpdateController@index');
     //Route::post('self-update', 'SelfUpdateController@update');
     //Route::get('self-update/download', 'SelfUpdateController@download');
+
+    // Route::get('modules/install', 'ModuleController@install');
 });
 
 Route::group(['middleware' => ['lookup:user', 'auth:user']], function () {
