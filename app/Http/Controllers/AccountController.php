@@ -9,6 +9,7 @@ use App\Events\UserSignedUp;
 use App\Http\Requests\SaveClientPortalSettings;
 use App\Http\Requests\SaveEmailSettings;
 use App\Http\Requests\UpdateAccountRequest;
+use App\Jobs\InstallModule;
 use App\Models\Account;
 use App\Models\AccountGateway;
 use App\Models\Affiliate;
@@ -31,6 +32,8 @@ use App\Services\AuthService;
 use App\Services\PaymentService;
 use App\Services\TemplateService;
 use Nwidart\Modules\Facades\Module;
+use Symfony\Component\Console\Output\StreamOutput;
+use Artisan;
 use Auth;
 use Cache;
 use File;
@@ -1578,5 +1581,29 @@ class AccountController extends BaseController
         ]);
 
         return Response::view($view, $data);
+    }
+
+    public function installModule() {
+        $moduleName = Input::get('module_name');
+
+        if($moduleName) {
+            // TODO: add dynamic check to see if package exists
+            //$exitCode = Artisan::call('queue:work', ['--once' => true]);
+
+            $stream = fopen('installModule.log', 'w');
+            Artisan::call('module:install', [
+                'name' => $moduleName,
+                '--type' => 'github'
+            ], new StreamOutput($stream));
+
+            $job = (new InstallModule($moduleName))->onConnection('database');
+            dispatch($job);
+
+            $exitCode = Artisan::call('queue:work', ['--once' => true], 'database');
+
+            return redirect('/settings/account_management')->withMessage(trans('texts.install_module_successful', ['name' => $moduleName]));;
+        } else {
+            return redirect('/settings/account_management');
+        }
     }
 }

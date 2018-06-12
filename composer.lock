@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "2172e546d6290b209356879fcd4b0ecf",
@@ -2639,7 +2639,8 @@
                 "reference": "origin/master",
                 "shasum": null
             },
-            "type": "library"
+            "type": "library",
+            "time": "2017-12-08T12:01:09+00:00"
         },
         {
             "name": "gocardless/gocardless-pro",
@@ -6908,6 +6909,7 @@
                 "twocheckout",
                 "worldpay"
             ],
+            "abandoned": "league/omnipay",
             "time": "2017-03-21T09:24:49+00:00"
         },
         {
@@ -8761,12 +8763,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/simshaun/recurr.git",
-                "reference": "bff55c3baa5ab905c8f49c325daa6e9fcfccbfc1"
+                "reference": "badd0c0315934ba1007ae476f0ffafc3f872322f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/simshaun/recurr/zipball/bff55c3baa5ab905c8f49c325daa6e9fcfccbfc1",
-                "reference": "bff55c3baa5ab905c8f49c325daa6e9fcfccbfc1",
+                "url": "https://api.github.com/repos/simshaun/recurr/zipball/badd0c0315934ba1007ae476f0ffafc3f872322f",
+                "reference": "badd0c0315934ba1007ae476f0ffafc3f872322f",
                 "shasum": ""
             },
             "require": {
@@ -8808,7 +8810,7 @@
                 "recurring",
                 "rrule"
             ],
-            "time": "2018-01-17T18:53:01+00:00"
+            "time": "2018-05-15T01:54:19+00:00"
         },
         {
             "name": "sly/notification-pusher",

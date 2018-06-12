@@ -169,7 +169,6 @@
 		@endif
 		{!! Former::close() !!}
 
-
 		{!! Former::open('settings/account_management') !!}
 		{!! Former::populateField('live_preview', intval($account->live_preview)) !!}
 		{!! Former::populateField('force_pdfjs', intval(Auth::user()->force_pdfjs)) !!}
@@ -239,6 +238,26 @@
 		</div>
 
 		{!! Former::close() !!}
+
+		{!! Former::open('settings/install_module') !!}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">{!! trans('texts.install_module') !!}</h3>
+				</div>
+				<div class="panel-body">
+		           {!! Former::text('module_name')->label('Name') !!}
+
+		           <div class="form-group">
+					<label for="modules" class="control-label col-lg-4 col-sm-4"></label>
+					<div class="col-lg-8 col-sm-8">
+						{!! Button::success(trans('texts.install'))->submit()->large()->appendIcon(Icon::create('download')) !!}
+					</div>
+				</div>
+        		</div>
+        	</div>
+
+		{!! Former::close() !!}
+
 
 		@if (! Auth::user()->account->isNinjaOrLicenseAccount())
 			<div class="panel panel-default">

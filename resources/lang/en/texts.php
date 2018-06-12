@@ -2845,6 +2845,11 @@ $LANG = array(
     'reference' => 'Reference',
     'amount_paid' => 'Amount Paid',
 
+    // Module install
+    'install' => 'Install',
+    'install_module' => 'Install Module',
+    'install_module_successful' => 'Successfully installed module :name.',
+
 );
 
 return $LANG;
