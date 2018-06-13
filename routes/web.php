@@ -334,6 +334,8 @@ Route::group([
     Route::post('settings/cancel_account', 'AccountController@cancelAccount');
     Route::post('settings/purge_data', 'AccountController@purgeData');
     Route::post('settings/company_details', 'AccountController@updateDetails');
+    Route::post('settings/search_module', 'ModuleInstallController@search');
+    Route::post('settings/install_module', 'ModuleInstallController@install');
     Route::post('settings/{section?}', 'AccountController@doSection');
     Route::post('remove_logo', 'AccountController@removeLogo');
 

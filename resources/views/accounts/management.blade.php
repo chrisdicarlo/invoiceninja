@@ -212,6 +212,18 @@
 
 		<div class="panel panel-default">
 			<div class="panel-heading">
+				<h3 class="panel-title">{!! trans('texts.install_module') !!}</h3>
+			</div>
+			<div class="panel-body">
+				{!! Former::text('module_name')->append(Button::primary(trans('texts.search'))->appendIcon(Icon::create('search'))->withAttributes(['onclick' => 'searchModule()']))->label('Module Name') !!}
+					<div class="form-group">
+						<span id="search_module_details" class="col-lg-8 col-lg-offset-4 col-sm-8 col-sm-offset-4"></span>
+					</div>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
 				<h3 class="panel-title">{!! trans('texts.pdf_settings') !!}</h3>
 			</div>
 			<div class="panel-body">
@@ -374,6 +386,28 @@
         } else {
             $('#numUsersDiv').hide();
         }
+    }
+
+    function searchModule() {
+    	$.ajax({
+            type: "POST",
+            url: '/settings/search_module',
+            data: {module_name: $('input[name="module_name"]').val()},
+            success: function(data) {
+                $('#search_module_details').html(data);
+            }
+        });
+    }
+
+    function installModule(moduleName) {
+    	$.ajax({
+    		type: "POST",
+    		url: '/settings/install_module',
+    		data: {module_name: moduleName},
+    		success: function(data) {
+    			console.log(data);
+    		}
+    	});
     }
 
   	jQuery(document).ready(function($){

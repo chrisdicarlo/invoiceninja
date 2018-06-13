@@ -2848,6 +2848,9 @@ $LANG = array(
     'all_invoices' => 'All Invoices',
     'my_invoices' => 'My Invoices',
 
+    // install module ui
+    'install_module' => 'Install Module',
+    'install' => 'Install',
 );
 
 return $LANG;
