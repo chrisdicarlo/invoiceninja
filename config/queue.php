@@ -43,6 +43,13 @@ return [
 			'expire' => 60,
 		],
 
+		'module_install' => [
+			'connecton' => env('QUEUE_DATABASE', 'mysql'),
+			'driver' => 'database',
+			'table' => 'jobs',
+			'queue' => 'module_install',
+		],
+
 		'beanstalkd' => [
 			'driver' => 'beanstalkd',
 			'host'   => 'localhost',

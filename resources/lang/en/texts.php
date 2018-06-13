@@ -2924,6 +2924,9 @@ $LANG = array(
     'send' => 'Send',
     'auto_billing' => 'Auto billing',
     'button' => 'Button',
+    // install module ui
+    'install_module' => 'Install Module',
+    'install' => 'Install',
 );
 
 return $LANG;
