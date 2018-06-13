@@ -10,6 +10,7 @@ use Utils;
 use Validator;
 use Queue;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Support\Facades\Route;
 
 
@@ -231,6 +232,12 @@ class AppServiceProvider extends ServiceProvider
 
         Validator::extend('valid_subdomain', function ($attribute, $value, $parameters) {
             return ! in_array($value, ['www', 'app', 'mail', 'admin', 'blog', 'user', 'contact', 'payment', 'payments', 'billing', 'invoice', 'business', 'owner', 'info', 'ninja', 'docs', 'doc', 'documents', 'download']);
+        });
+
+        Queue::after(function (JobProcessed $event) {
+            Log::info($event->connectionName);
+            Log::info($event->job);
+            Log::info($event->job->payload());
         });
     }
 
