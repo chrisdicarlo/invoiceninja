@@ -1765,4 +1765,7 @@
         @endforeach
     @endif
 
+    @foreach(Module::getOrdered() as $module)
+        @includeIf($module->getLowerName() . '::invoices.edit')
+    @endforeach
 @stop
