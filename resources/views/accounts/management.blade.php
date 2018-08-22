@@ -429,32 +429,22 @@
 				swal({
 					title: 'Installing...',
 					text: 'Installng module ' + moduleName,
-					button: {
-						text: 'Close',
-						closeModal: true,
-					},
+					icon: 'info',
 				})
 				.then(results => {
 					return results.json();
-				})
-				.then(json => {
-					const movie = json.results[0];
-
-				  	if (!movie) {
-				    	return swal("No movie was found!");
-				  	}
-
-				  	const name = movie.trackName;
-				  	const imageURL = movie.artworkUrl100;
-
-				  	swal({
-				    	title: "Installed!",
-				    	text: name,
-				  	});
 				});
     		},
     		success: function(data) {
-    			swal({"Success!", "Module successfully installed", "success");
+    			swal({
+    				title: "Success!",
+    				text: "Module successfully installed",
+    				icon: "success",
+    			}).then(result => {
+    				if(result.value) {
+	    				window.location.replace('{!! url()->current() !!}');
+    				}
+    			});
     		},
     		error: function(data) {
     			swal("Oops", "We couldn't install the module due to an error!", "error");
