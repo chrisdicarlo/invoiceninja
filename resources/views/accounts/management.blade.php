@@ -395,9 +395,24 @@
             type: "POST",
             url: '/settings/search_module',
             data: {module_name: $('input[name="module_name"]').val()},
+            beforeSend: function() {
+            	$('#module_name + .input-group-btn > button > span')
+    				.removeClass('glyphicon glyphicon-search')
+    				.addClass('fa fa-circle-o-notch fa-spin fa-fw');
+				$('#module_name + .input-group-btn>button').prop('disabled', true);
+			},
             success: function(data) {
                 $('#search_module_details').html(data);
-            }
+            },
+    		error: function(data) {
+    			console.log(data);
+    		},
+            complete: function(data) {
+		    	$('#module_name + .input-group-btn > button > span')
+		    		.addClass('glyphicon glyphicon-search')
+		    		.removeClass('fa fa-circle-o-notch fa-spin fa-fw');
+	          	$('#module_name + .input-group-btn>button').prop('disabled', false);
+	        }
         });
     }
 
@@ -406,8 +421,23 @@
     		type: "POST",
     		url: '/settings/install_module',
     		data: {module_name: moduleName},
+    		beforeSend: function() {
+    			$('#search_module_details > button > span')
+    				.removeClass('glyphicon glyphicon-cloud-download')
+    				.addClass('fa fa-circle-o-notch fa-spin fa-fw');
+				$('#search_module_details > button').prop('disabled', true);
+    		},
     		success: function(data) {
     			console.log(data);
+    		},
+    		error: function(data) {
+    			console.log(data);
+    		},
+    		complete: function(data) {
+			   	$('#search_module_details > button > span')
+    				.addClass('glyphicon glyphicon-cloud-download')
+    				.removeClass('fa fa-circle-o-notch fa-spin fa-fw');
+				$('#search_module_details > button').prop('disabled', false);
     		}
     	});
     }
