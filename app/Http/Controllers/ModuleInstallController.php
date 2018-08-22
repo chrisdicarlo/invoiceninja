@@ -27,7 +27,7 @@ class ModuleInstallController extends BaseController
     public function install(Request $request) {
         $moduleName = $request->input('module_name');
 
-        dispatch(new InstallModule($moduleName))->onQueue('module_install');
-        // return redirect('settings/account_management');
+        $exitCode = \Artisan::call('module:install', ['--type' => 'github', 'name' => $moduleName]);
+        return \Artisan::output();
     }
 }

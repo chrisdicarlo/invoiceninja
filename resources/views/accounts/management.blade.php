@@ -426,12 +426,38 @@
     				.removeClass('glyphicon glyphicon-cloud-download')
     				.addClass('fa fa-circle-o-notch fa-spin fa-fw');
 				$('#search_module_details > button').prop('disabled', true);
+				swal({
+					title: 'Installing...',
+					text: 'Installng module ' + moduleName,
+					button: {
+						text: 'Close',
+						closeModal: true,
+					},
+				})
+				.then(results => {
+					return results.json();
+				})
+				.then(json => {
+					const movie = json.results[0];
+
+				  	if (!movie) {
+				    	return swal("No movie was found!");
+				  	}
+
+				  	const name = movie.trackName;
+				  	const imageURL = movie.artworkUrl100;
+
+				  	swal({
+				    	title: "Installed!",
+				    	text: name,
+				  	});
+				});
     		},
     		success: function(data) {
-    			console.log(data);
+    			swal({"Success!", "Module successfully installed", "success");
     		},
     		error: function(data) {
-    			console.log(data);
+    			swal("Oops", "We couldn't install the module due to an error!", "error");
     		},
     		complete: function(data) {
 			   	$('#search_module_details > button > span')
