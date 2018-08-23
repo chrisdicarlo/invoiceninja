@@ -390,7 +390,7 @@
         }
     }
 
-    function searchModule() {
+function searchModule() {
     	$.ajax({
             type: "POST",
             url: '/settings/search_module',
@@ -426,12 +426,26 @@
     				.removeClass('glyphicon glyphicon-cloud-download')
     				.addClass('fa fa-circle-o-notch fa-spin fa-fw');
 				$('#search_module_details > button').prop('disabled', true);
+				swal({
+					title: 'Installing...',
+					text: 'Installng module ' + moduleName,
+					icon: 'info',
+				});
     		},
     		success: function(data) {
-    			console.log(data);
+    			swal({
+    				title: "Success!",
+    				text: data, //"Module successfully installed",
+    				icon: "success",
+    			})
+    			.then(result => {
+    				if(result.value) {
+	    				window.location.replace('{!! url()->current() !!}');
+    				}
+    			});
     		},
     		error: function(data) {
-    			console.log(data);
+    			swal("Oops", "We couldn't install the module due to an error!", "error");
     		},
     		complete: function(data) {
 			   	$('#search_module_details > button > span')
