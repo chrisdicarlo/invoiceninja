@@ -1040,8 +1040,8 @@ ko.bindingHandlers.productTypeahead = {
             limit: 50,
             templates: {
                 suggestion: function(item) { return '<div title="' + _.escape(item.notes) + '" style="border-bottom: solid 1px #CCC">'
-                    + _.escape(item.product_key) + ': '
-                    + roundToTwo(item.cost, true) + "<br/>"
+                    + _.escape(item.product_key) + "<br/>"
+                    + roundToTwo(item.cost, true) + ' • '
                     + _.escape(item.notes.substring(0, 100)) + '</div>' }
             },
             source: searchData(allBindings.items, allBindings.key, false, 'notes')
@@ -1063,8 +1063,8 @@ ko.bindingHandlers.productTypeahead = {
                             var rate = false;
                             if ((account.custom_fields.invoice_text1 || '').toLowerCase() == "{{ strtolower(trans('texts.exchange_rate')) }}") {
                                 rate = window.model.invoice().custom_text_value1();
-                            } else if ((account.custom_fields.invoice_text1 || '').toLowerCase() == "{{ strtolower(trans('texts.exchange_rate')) }}") {
-                                rate = window.model.invoice().custom_text_value1();
+                            } else if ((account.custom_fields.invoice_text2 || '').toLowerCase() == "{{ strtolower(trans('texts.exchange_rate')) }}") {
+                                rate = window.model.invoice().custom_text_value2();
                             }
                             if (rate) {
                                 cost = cost * rate;
@@ -1084,7 +1084,7 @@ ko.bindingHandlers.productTypeahead = {
                                         });
                                         if ((account.custom_fields.invoice_text1 || '').toLowerCase() == "{{ strtolower(trans('texts.exchange_rate')) }}") {
                                             window.model.invoice().custom_text_value1(roundToFour(rate, true));
-                                        } else if ((account.custom_fields.invoice_text1 || '').toLowerCase() == "{{ strtolower(trans('texts.exchange_rate')) }}") {
+                                        } else if ((account.custom_fields.invoice_text2 || '').toLowerCase() == "{{ strtolower(trans('texts.exchange_rate')) }}") {
                                             window.model.invoice().custom_text_value2(roundToFour(rate, true));
                                         }
                                     }
@@ -1137,7 +1137,7 @@ ko.bindingHandlers.productTypeahead = {
 };
 
 function checkInvoiceNumber() {
-    var url = '{{ url('check_invoice_number') }}/{{ $invoice->id ? $invoice->public_id : '' }}?invoice_number=' + encodeURIComponent($('#invoice_number').val());
+    var url = '{{ url('check_invoice_number') }}{{ $invoice->id ? '/' . $invoice->public_id : '' }}?invoice_number=' + encodeURIComponent($('#invoice_number').val());
     $.get(url, function(data) {
         var isValid = data == '{{ RESULT_SUCCESS }}' ? true : false;
         if (isValid) {

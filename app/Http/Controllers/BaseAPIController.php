@@ -74,7 +74,7 @@ class BaseAPIController extends Controller
         $entity = $request->entity();
         $action = $request->action;
 
-        if (! in_array($action, ['archive', 'delete', 'restore', 'mark_sent'])) {
+        if (! in_array($action, ['archive', 'delete', 'restore', 'mark_sent', 'markSent', 'emailInvoice', 'markPaid'])) {
             return $this->errorResponse("Action [$action] is not supported");
         }
 
@@ -99,6 +99,10 @@ class BaseAPIController extends Controller
 
         $query->with($includes);
 
+        if (Input::get('filter_active')) {
+            $query->whereNull('deleted_at');
+        }
+
         if (Input::get('updated_at') > 0) {
                 $updatedAt = intval(Input::get('updated_at'));
                 $query->where('updated_at', '>=', date('Y-m-d H:i:s', $updatedAt));
@@ -112,7 +116,7 @@ class BaseAPIController extends Controller
              $query->whereHas('client', $filter);
         }
 
-        if (! Utils::hasPermission('admin')) {
+        if (! Utils::hasPermission('view_'.$this->entityType)) {
             if ($this->entityType == ENTITY_USER) {
                 $query->where('id', '=', Auth::user()->id);
             } else {

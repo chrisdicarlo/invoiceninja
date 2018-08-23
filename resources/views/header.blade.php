@@ -6,7 +6,9 @@
     @if (Utils::isNinjaDev())
         <style type="text/css">
             .nav-footer {
-                @if (config('mail.driver') == 'log' && ! config('services.postmark'))
+                @if (env('TRAVIS'))
+                    background-color: #FF0000 !important;
+                @elseif (config('mail.driver') == 'log' && ! config('services.postmark'))
                     background-color: #50C878 !important;
                 @else
                     background-color: #FD6A02 !important;
@@ -92,6 +94,28 @@
             source: searchData(data['{{ Auth::user()->account->present()->customLabel('client2') }}'], 'tokens'),
             templates: {
               header: '&nbsp;<span style="font-weight:600;font-size:16px">{{ Auth::user()->account->present()->customLabel('client2') }}</span>'
+            }
+          }
+          @endif
+          @if (Auth::check() && Auth::user()->account->customLabel('invoice_text1'))
+          ,{
+            name: 'data',
+            limit: 3,
+            display: 'value',
+            source: searchData(data['{{ Auth::user()->account->present()->customLabel('invoice_text1') }}'], 'tokens'),
+            templates: {
+              header: '&nbsp;<span style="font-weight:600;font-size:16px">{{ Auth::user()->account->present()->customLabel('invoice_text1') }}</span>'
+            }
+          }
+          @endif
+          @if (Auth::check() && Auth::user()->account->customLabel('invoice_text2'))
+          ,{
+            name: 'data',
+            limit: 3,
+            display: 'value',
+            source: searchData(data['{{ Auth::user()->account->present()->customLabel('invoice_text2') }}'], 'tokens'),
+            templates: {
+              header: '&nbsp;<span style="font-weight:600;font-size:16px">{{ Auth::user()->account->present()->customLabel('invoice_text2') }}</span>'
             }
           }
           @endif
@@ -370,7 +394,11 @@
             'reports' => false,
             'settings' => false,
         ] as $key => $value)
-            {!! Form::nav_link($key, $value ?: $key) !!}
+              @if (in_array($key, ['dashboard', 'settings'])
+                || Auth::user()->can('view', substr($key, 0, -1))
+                || Auth::user()->can('create', substr($key, 0, -1)))
+                  {!! Form::nav_link($key, $value ?: $key) !!}
+              @endif
         @endforeach
       </ul>
     </div><!-- /.navbar-collapse -->
@@ -406,8 +434,9 @@
             @if ( ! Utils::isNinjaProd())
                 @foreach (Module::collections() as $module)
                     @includeWhen(empty($module->get('no-sidebar')) || $module->get('no-sidebar') != '1', 'partials.navigation_option', [
-                        'option' => $module->getAlias(),
+                        'option' => $module->get('base-route', $module->getAlias()),
                         'icon' => $module->get('icon', 'th-large'),
+                        'moduleName' => $module->getLowerName(),
                     ])
                 @endforeach
             @endif
@@ -462,7 +491,7 @@
           @endif
 
           @if (Session::has('message'))
-            <div class="alert alert-info alert-hide">
+            <div class="alert alert-info alert-hide" style="z-index:9999">
               {{ Session::get('message') }}
             </div>
           @elseif (Session::has('news_feed_message'))

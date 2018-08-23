@@ -5,7 +5,7 @@
 # Invoice Ninja
 
 [![Build Status](https://travis-ci.org/invoiceninja/invoiceninja.svg?branch=develop)](https://travis-ci.org/invoiceninja/invoiceninja)
-[![Docs](https://readthedocs.org/projects/invoice-ninja/badge/?version=latest)](http://docs.invoiceninja.com/en/latest/?badge=latest)
+[![Docs](https://readthedocs.org/projects/invoice-ninja/badge/?version=latest)](https://invoice-ninja.readthedocs.io/en/latest/?badge=latest)
 
 ## [Hosted](https://www.invoiceninja.com) | [Self-Hosted](https://www.invoiceninja.org)
 
@@ -17,7 +17,7 @@ The self-host zip includes all third party libraries whereas downloading the cod
 
 * [Features](https://www.invoiceninja.com/invoicing-features/)
 * [Videos](https://www.youtube.com/channel/UCXAHcBvhW05PDtWYIq7WDFA/videos)
-* [User Guide](http://docs.invoiceninja.com/en/latest/)
+* [User Guide](https://invoice-ninja.readthedocs.io/en/latest/)
 * [Support Forum](https://www.invoiceninja.com/forums/forum/support/)
 * [Roadmap](https://trello.com/b/63BbiVVe/)
 
@@ -37,7 +37,7 @@ The self-host zip includes all third party libraries whereas downloading the cod
 
 ## Installation Options
 * [Ansible](https://github.com/invoiceninja/ansible-installer)
-* [Self-Host Zip](http://docs.invoiceninja.com/en/latest/install.html)
+* [Self-Host Zip](https://invoice-ninja.readthedocs.io/en/latest/install.html)
 * [Docker File](https://hub.docker.com/r/invoiceninja/invoiceninja/)
 * [Cloudron](https://cloudron.io/store/com.invoiceninja.cloudronapp.html)
 * [Softaculous](https://www.softaculous.com/apps/ecommerce/Invoice_Ninja)
@@ -47,13 +47,14 @@ The self-host zip includes all third party libraries whereas downloading the cod
 * [Postmark](https://postmarkapp.com/)
 
 ## Development
-* [API Documentation](http://docs.invoiceninja.com/en/latest/api.html)
+* [API Documentation](https://invoice-ninja.readthedocs.io/en/latest/api.html)
 * [PHP SDK](https://github.com/invoiceninja/sdk-php)
 * [Zend Framework](https://github.com/alexz707/InvoiceNinjaModule)
-* [Custom Module](http://docs.invoiceninja.com/en/latest/custom_modules.html) | [Watch Video](https://www.youtube.com/watch?v=8jJ-PYuq85k)
+* [Custom Module](https://invoice-ninja.readthedocs.io/en/latest/custom_modules.html) | [Watch Video](https://www.youtube.com/watch?v=8jJ-PYuq85k)
 
 ## Third Party Modules
 * [Event Scheduler](https://github.com/cytech/Scheduler-InvoiceNinja)
+* [Manufacturer Module](https://github.com/dicarlosystems/manufacturer-invoiceninja)
 
 > Feel free to email us for help if you're working on a module, we're happy to provide developer support.
 
@@ -66,7 +67,7 @@ The self-host zip includes all third party libraries whereas downloading the cod
 * [Some Techie](https://www.sometechie.com/customize-invoice-ninja/)
 
 ## Contributing
-All contributors are welcome!  
+All contributors are welcome!
 For information on how contribute to Invoice Ninja, please see our [contributing guide](CONTRIBUTING.md).
 
 ## Credits
@@ -83,7 +84,8 @@ For information on how contribute to Invoice Ninja, please see our [contributing
 * [Samuel Laulhau](https://github.com/lalop) - [Lalop](http://lalop.co/)
 * [Alexander Zamponi](https://github.com/alexz707)
 * [Matthieu Calie](https://github.com/Matth--)
+* [Christopher Di Carlo](https://github.com/dicarlosystems) - [Di Carlo Systems Inc.](https://www.dicarlosystems.ca)
 
 ## License
-Invoice Ninja is released under the Attribution Assurance License.  
+Invoice Ninja is released under the Attribution Assurance License.
 See [LICENSE](LICENSE) for details.

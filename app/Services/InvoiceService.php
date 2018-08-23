@@ -84,7 +84,7 @@ class InvoiceService extends BaseService
             $canSaveClient = false;
             $canViewClient = false;
             $clientPublicId = array_get($data, 'client.public_id') ?: array_get($data, 'client.id');
-            if (empty($clientPublicId) || $clientPublicId == '-1') {
+            if (empty($clientPublicId) || intval($clientPublicId) < 0) {
                 $canSaveClient = Auth::user()->can('create', ENTITY_CLIENT);
             } else {
                 $client = Client::scope($clientPublicId)->first();
@@ -163,7 +163,7 @@ class InvoiceService extends BaseService
         $query = $this->invoiceRepo->getInvoices($accountId, $clientPublicId, $entityType, $search)
                     ->where('invoices.invoice_type_id', '=', $entityType == ENTITY_QUOTE ? INVOICE_TYPE_QUOTE : INVOICE_TYPE_STANDARD);
 
-        if (! Utils::hasPermission('view_invoice')) {
+        if (! Utils::hasPermission('view_' . $entityType)) {
             $query->where('invoices.user_id', '=', Auth::user()->id);
         }
 

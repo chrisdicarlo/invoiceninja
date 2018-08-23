@@ -181,7 +181,11 @@ class InvoiceApiController extends BaseAPIController
                 $client = $this->clientRepo->save($clientData);
             }
         } elseif (isset($data['client_id'])) {
-            $client = Client::scope($data['client_id'])->firstOrFail();
+            $client = Client::scope($data['client_id'])->first();
+
+            if (! $client) {
+                return $this->errorResponse('Client not found', 404);
+            }
         }
 
         $data = self::prepareData($data, $client);
@@ -361,10 +365,13 @@ class InvoiceApiController extends BaseAPIController
             $invoice = $recurringInvoice;
         }
 
+        $reminder = request()->reminder;
+        $template = request()->template;
+
         if (config('queue.default') !== 'sync') {
-            $this->dispatch(new SendInvoiceEmail($invoice, auth()->user()->id));
+            $this->dispatch(new SendInvoiceEmail($invoice, auth()->user()->id, $reminder, $template));
         } else {
-            $result = app('App\Ninja\Mailers\ContactMailer')->sendInvoice($invoice);
+            $result = app('App\Ninja\Mailers\ContactMailer')->sendInvoice($invoice, $reminder, $template);
             if ($result !== true) {
                 return $this->errorResponse($result, 500);
             }

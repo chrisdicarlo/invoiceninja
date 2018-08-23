@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\InitLookup',
         'App\Console\Commands\CalculatePayouts',
         'App\Console\Commands\UpdateKey',
+        'App\Console\Commands\MobileLocalization',
     ];
 
     /**
@@ -44,13 +45,13 @@ class Kernel extends ConsoleKernel
         $logFile = storage_path() . '/logs/cron.log';
 
         $schedule
-            ->command('ninja:send-invoices --force')
+            ->command('ninja:send-invoices')
             ->sendOutputTo($logFile)
             ->withoutOverlapping()
             ->hourly();
 
         $schedule
-            ->command('ninja:send-reminders --force')
+            ->command('ninja:send-reminders')
             ->sendOutputTo($logFile)
             ->daily();
     }

@@ -74,6 +74,7 @@ class CountriesSeeder extends Seeder
             ],
             'EE' => [ // Estonia
                 'swap_currency_symbol' => true,
+                'thousand_separator' => ' ',
             ],
             'ES' => [ // Spain
                 'swap_postal_code' => true,
@@ -161,6 +162,9 @@ class CountriesSeeder extends Seeder
             'US' => [
                 'thousand_separator' => ',',
                 'decimal_separator' => '.',
+            ],
+            'SR' => [ // Suriname
+                'swap_currency_symbol' => true,
             ],
             'UY' => [
                 'swap_postal_code' => true,

@@ -69,6 +69,15 @@ class AccountApiController extends BaseAPIController
         }
 
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            // TODO remove token_name check once legacy apps are deactivated
+            if ($user->google_2fa_secret && strpos($request->token_name, 'invoice-ninja-') !== false) {
+                $secret = \Crypt::decrypt($user->google_2fa_secret);
+                if (! $request->one_time_password) {
+                    return $this->errorResponse(['message' => 'OTP_REQUIRED'], 401);
+                } elseif (! \Google2FA::verifyKey($secret, $request->one_time_password)) {
+                    return $this->errorResponse(['message' => 'Invalid one time password'], 401);
+                }
+            }
             if ($user && $user->failed_logins > 0) {
                 $user->failed_logins = 0;
                 $user->save();
@@ -85,15 +94,32 @@ class AccountApiController extends BaseAPIController
         }
     }
 
-    private function processLogin(Request $request)
+    public function refresh(Request $request)
+    {
+        return $this->processLogin($request, false);
+    }
+
+    private function processLogin(Request $request, $createToken = true)
     {
         // Create a new token only if one does not already exist
         $user = Auth::user();
-        $this->accountRepo->createTokens($user, $request->token_name);
+        $account = $user->account;
+
+        if ($createToken) {
+            $this->accountRepo->createTokens($user, $request->token_name);
+        }
 
         $users = $this->accountRepo->findUsers($user, 'account.account_tokens');
-        $transformer = new UserAccountTransformer($user->account, $request->serializer, $request->token_name);
+        $transformer = new UserAccountTransformer($account, $request->serializer, $request->token_name);
         $data = $this->createCollection($users, $transformer, 'user_account');
+
+        if (request()->include_static) {
+            $data = [
+                'accounts' => $data,
+                'static' => Utils::getStaticData($account->getLocale()),
+                'version' => NINJA_VERSION,
+            ];
+        }
 
         return $this->response($data);
     }
@@ -112,14 +138,7 @@ class AccountApiController extends BaseAPIController
 
     public function getStaticData()
     {
-        $data = [];
-
-        $cachedTables = unserialize(CACHED_TABLES);
-        foreach ($cachedTables as $name => $class) {
-            $data[$name] = Cache::get($name);
-        }
-
-        return $this->response($data);
+        return $this->response(Utils::getStaticData());
     }
 
     public function getUserAccounts(Request $request)

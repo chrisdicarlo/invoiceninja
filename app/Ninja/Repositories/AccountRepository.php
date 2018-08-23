@@ -132,6 +132,12 @@ class AccountRepository
     private function checkForSpammer()
     {
         $ip = Request::getClientIp();
+
+        // Apple's IP for their test accounts
+        if ($ip == '17.200.11.44') {
+            return;
+        }
+
         $count = Account::whereIp($ip)->whereHas('users', function ($query) {
             $query->whereRegistered(true);
         })->count();
@@ -174,6 +180,12 @@ class AccountRepository
         }
         if ($account->customLabel('client2')) {
             $data[$account->present()->customLabel('client2')] = [];
+        }
+        if ($account->customLabel('invoice_text1')) {
+            $data[$account->present()->customLabel('invoice_text1')] = [];
+        }
+        if ($account->customLabel('invoice_text2')) {
+            $data[$account->present()->customLabel('invoice_text2')] = [];
         }
 
         if ($user->hasPermission(['view_client', 'view_invoice'], true)) {
@@ -234,6 +246,21 @@ class AccountRepository
                     'tokens' => implode(',', [$invoice->invoice_number, $invoice->po_number]),
                     'url' => $invoice->present()->url,
                 ];
+
+                if ($customValue = $invoice->custom_text_value1) {
+                    $data[$account->present()->customLabel('invoice_text1')][] = [
+                        'value' => "{$customValue}: {$invoice->getDisplayName()}",
+                        'tokens' => $customValue,
+                        'url' => $invoice->present()->url,
+                    ];
+                }
+                if ($customValue = $invoice->custom_text_value2) {
+                    $data[$account->present()->customLabel('invoice_text2')][] = [
+                        'value' => "{$customValue}: {$invoice->getDisplayName()}",
+                        'tokens' => $customValue,
+                        'url' => $invoice->present()->url,
+                    ];
+                }
             }
         }
 
@@ -251,6 +278,7 @@ class AccountRepository
             ENTITY_EXPENSE_CATEGORY,
             ENTITY_VENDOR,
             ENTITY_RECURRING_INVOICE,
+            ENTITY_RECURRING_QUOTE,
             ENTITY_PAYMENT,
             ENTITY_CREDIT,
             ENTITY_PROJECT,
@@ -727,7 +755,9 @@ class AccountRepository
 
     public function findWithReminders()
     {
-        return Account::whereRaw('enable_reminder1 = 1 OR enable_reminder2 = 1 OR enable_reminder3 = 1 OR enable_reminder4 = 1')->get();
+        return Account::whereHas('account_email_settings', function($query) {
+            $query->whereRaw('enable_reminder1 = 1 OR enable_reminder2 = 1 OR enable_reminder3 = 1 OR enable_reminder4 = 1');
+        })->get();
     }
 
     public function findWithFees()

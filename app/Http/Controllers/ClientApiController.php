@@ -82,7 +82,13 @@ class ClientApiController extends BaseAPIController
      */
     public function show(ClientRequest $request)
     {
-        return $this->itemResponse($request->entity());
+        $client = $request->entity();
+
+        if (strpos(request()->include, 'activities') !== false) {
+            $client->load('activities.client.contacts', 'activities.user', 'activities.invoice', 'activities.payment', 'activities.credit', 'activities.account', 'activities.task', 'activities.expense', 'activities.contact');
+        }
+
+        return $this->itemResponse($client);
     }
 
     /**

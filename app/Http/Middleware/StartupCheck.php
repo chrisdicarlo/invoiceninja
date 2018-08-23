@@ -60,8 +60,14 @@ class StartupCheck
             abort(403);
         }
 
-        // Check if a new version was installed
-        if (! Utils::isNinja()) {
+        if (Utils::isSelfHost()) {
+            // Check if config:cache may have been run
+            if (app()->configurationIsCached()) {
+                echo 'Config caching is not currently supported, please run the following command to clear the cache.<pre>php artisan config:clear</pre>';
+                exit;
+            }
+
+            // Check if a new version was installed
             $file = storage_path() . '/version.txt';
             $version = @file_get_contents($file);
             if ($version != NINJA_VERSION) {

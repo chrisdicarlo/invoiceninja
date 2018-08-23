@@ -219,7 +219,7 @@ class Vendor extends EntityModel
     {
         $publicId = isset($data['public_id']) ? $data['public_id'] : (isset($data['id']) ? $data['id'] : false);
 
-        if (! $this->wasRecentlyCreated && $publicId && $publicId != '-1') {
+        if (! $this->wasRecentlyCreated && $publicId && intval($publicId) > 0) {
             $contact = VendorContact::scope($publicId)->whereVendorId($this->id)->firstOrFail();
         } else {
             $contact = VendorContact::createNew();
@@ -335,12 +335,13 @@ class Vendor extends EntityModel
     /**
      * @return float|int
      */
-    public function getTotalExpenses()
+    public function getUnpaidExpenses()
     {
         return DB::table('expenses')
                 ->select('expense_currency_id', DB::raw('SUM(amount) as amount'))
                 ->whereVendorId($this->id)
                 ->whereIsDeleted(false)
+                ->whereNull('payment_date')
                 ->groupBy('expense_currency_id')
                 ->get();
     }

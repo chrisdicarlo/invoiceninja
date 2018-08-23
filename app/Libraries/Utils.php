@@ -501,6 +501,50 @@ class Utils
         }
     }
 
+    public static function getStaticData($locale = false)
+    {
+        $data = [];
+
+        $cachedTables = unserialize(CACHED_TABLES);
+        foreach ($cachedTables as $name => $class) {
+            $data[$name] = Cache::get($name);
+        }
+
+        if ($locale) {
+            $data['industries'] = Cache::get('industries')->each(function ($industry) {
+                $industry->name = trans('texts.industry_'.$industry->name);
+            })->sortBy(function ($industry) {
+                return $industry->name;
+            })->values();
+
+            $data['countries'] = Cache::get('countries')->each(function ($country) {
+                $country->name = trans('texts.country_'.$country->name);
+            })->sortBy(function ($country) {
+                return $country->name;
+            })->values();
+
+            $data['paymentTypes'] = Cache::get('paymentTypes')->each(function ($pType) {
+                $pType->name = trans('texts.payment_type_'.$pType->name);
+            })->sortBy(function ($pType) {
+                return $pType->name;
+            })->values();
+
+            $data['languages'] = Cache::get('languages')->each(function ($lang) {
+                $lang->name = trans('texts.lang_'.$lang->name);
+            })->sortBy(function ($lang) {
+                return $lang->name;
+            })->values();
+
+            $data['currencies'] = Cache::get('currencies')->each(function ($currency) {
+                $currency->name = trans('texts.currency_' . \Str::slug($currency->name, '_'));
+            })->sortBy(function ($currency) {
+                return $currency->name;
+            })->values();
+        }
+
+        return $data;
+    }
+
     public static function getFromCache($id, $type)
     {
         $cache = Cache::get($type);
@@ -860,7 +904,7 @@ class Utils
             $month += 12;
         }
 
-        return trans('texts.' . $months[$month], [], null, $locale);
+        return trans('texts.' . $months[$month], [], $locale);
     }
 
     private static function getQuarter($offset)
