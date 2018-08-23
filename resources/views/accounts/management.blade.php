@@ -390,7 +390,7 @@
         }
     }
 
-    function searchModule() {
+function searchModule() {
     	$.ajax({
             type: "POST",
             url: '/settings/search_module',
@@ -430,17 +430,15 @@
 					title: 'Installing...',
 					text: 'Installng module ' + moduleName,
 					icon: 'info',
-				})
-				.then(results => {
-					return results.json();
 				});
     		},
     		success: function(data) {
     			swal({
     				title: "Success!",
-    				text: "Module successfully installed",
+    				text: data, //"Module successfully installed",
     				icon: "success",
-    			}).then(result => {
+    			})
+    			.then(result => {
     				if(result.value) {
 	    				window.location.replace('{!! url()->current() !!}');
     				}
