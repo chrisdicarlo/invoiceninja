@@ -390,71 +390,118 @@
         }
     }
 
-function searchModule() {
-    	$.ajax({
-            type: "POST",
-            url: '/settings/search_module',
-            data: {module_name: $('input[name="module_name"]').val()},
-            beforeSend: function() {
-            	$('#module_name + .input-group-btn > button > span')
-    				.removeClass('glyphicon glyphicon-search')
-    				.addClass('fa fa-circle-o-notch fa-spin fa-fw');
-				$('#module_name + .input-group-btn>button').prop('disabled', true);
-			},
-            success: function(data) {
-                $('#search_module_details').html(data);
-            },
-    		error: function(data) {
-    			console.log(data);
-    		},
-            complete: function(data) {
-		    	$('#module_name + .input-group-btn > button > span')
-		    		.addClass('glyphicon glyphicon-search')
-		    		.removeClass('fa fa-circle-o-notch fa-spin fa-fw');
-	          	$('#module_name + .input-group-btn>button').prop('disabled', false);
-	        }
-        });
+    function searchModule() {
+    	var moduleName = $('input[name="module_name"]').val();
+    	enableModuleSearchButton(false);
+		console.log(swal());
+
+		$.ajax({
+    		url: '/settings/search_module',
+    		data: {module_name: moduleName},
+    		type: 'POST',
+    		timeout: 3000
+    	}).success(function(data, textStatus) {
+    		console.log('search success');
+    		swal({
+    			title: 'Install Module?',
+    			type: 'warning',
+    			html: `<div class="well">${data}</div>`,
+    			showCancelButton: true,
+    			confirmButtonText: 'Install',
+				confirmButtonClass: 'btn btn-success',
+				cancelButtonClass: 'btn btn-danger',
+				cancelButtonColor: '#d9534f',
+    			reverseButtons: true
+    		});
+    	}).error(function(textStatus) {
+    		console.log('search error');
+    		if(textStatus === 'timeout') {
+    			swal('Search Failed', 'Search failed due to AJAX request timeout.', 'error');
+    		}
+    		// enableModuleSearchButton();
+    	}).complete(function() {
+    		console.log('search complete');
+    		enableModuleSearchButton();
+    	});
+
+   //  	$.ajax({
+   //          type: "POST",
+   //          url: '/settings/search_module',
+   //          data: {module_name: $('input[name="module_name"]').val()},
+   //          beforeSend: function() {
+   //          	$('#module_name + .input-group-btn > button > span')
+   //  				.removeClass('glyphicon glyphicon-search')
+   //  				.addClass('fa fa-circle-o-notch fa-spin fa-fw');
+			// 	$('#module_name + .input-group-btn>button').prop('disabled', true);
+			// },
+   //          success: function(data) {
+   //              $('#search_module_details').html(data);
+   //          },
+   //  		error: function(data) {
+   //  			console.log(data);
+   //  		},
+   //          complete: function(data) {
+		 //    	$('#module_name + .input-group-btn > button > span')
+		 //    		.addClass('glyphicon glyphicon-search')
+		 //    		.removeClass('fa fa-circle-o-notch fa-spin fa-fw');
+	  //         	$('#module_name + .input-group-btn>button').prop('disabled', false);
+	  //       }
+   //      });
     }
 
-    function installModule(moduleName) {
-    	$.ajax({
-    		type: "POST",
-    		url: '/settings/install_module',
-    		data: {module_name: moduleName},
-    		beforeSend: function() {
-    			$('#search_module_details > button > span')
-    				.removeClass('glyphicon glyphicon-cloud-download')
-    				.addClass('fa fa-circle-o-notch fa-spin fa-fw');
-				$('#search_module_details > button').prop('disabled', true);
-				swal({
-					title: 'Installing...',
-					text: 'Installng module ' + moduleName,
-					icon: 'info',
-				});
-    		},
-    		success: function(data) {
-    			swal({
-    				title: "Success!",
-    				text: data, //"Module successfully installed",
-    				icon: "success",
-    			})
-    			.then(result => {
-    				if(result.value) {
-	    				window.location.replace('{!! url()->current() !!}');
-    				}
-    			});
-    		},
-    		error: function(data) {
-    			swal("Oops", "We couldn't install the module due to an error!", "error");
-    		},
-    		complete: function(data) {
-			   	$('#search_module_details > button > span')
-    				.addClass('glyphicon glyphicon-cloud-download')
-    				.removeClass('fa fa-circle-o-notch fa-spin fa-fw');
-				$('#search_module_details > button').prop('disabled', false);
-    		}
-    	});
-    }
+   //  function installModule(moduleName) {
+   //  	$.ajax({
+   //  		type: "POST",
+   //  		url: '/settings/install_module',
+   //  		data: {module_name: moduleName},
+   //  		beforeSend: function() {
+   //  			$('#search_module_details > button > span')
+   //  				.removeClass('glyphicon glyphicon-cloud-download')
+   //  				.addClass('fa fa-circle-o-notch fa-spin fa-fw');
+			// 	$('#search_module_details > button').prop('disabled', true);
+			// 	swal({
+			// 		title: 'Installing...',
+			// 		text: 'Installng module ' + moduleName,
+			// 		icon: 'info',
+			// 	});
+   //  		},
+   //  		success: function(data) {
+   //  			swal({
+   //  				title: "Success!",
+   //  				text: "Module successfully installed",
+   //  				icon: "success",
+   //  			}).then(result => {
+   //  				if(result.value) {
+	  //   				window.location.replace('{!! url()->current() !!}');
+   //  				}
+   //  			});
+   //  		},
+   //  		error: function(data) {
+   //  			swal("Oops", "We couldn't install the module due to an error!", "error");
+   //  		},
+   //  		complete: function(data) {
+			//    	$('#search_module_details > button > span')
+   //  				.addClass('glyphicon glyphicon-cloud-download')
+   //  				.removeClass('fa fa-circle-o-notch fa-spin fa-fw');
+			// 	$('#search_module_details > button').prop('disabled', false);
+   //  		}
+   //  	});
+   //  }
+
+   function enableModuleSearchButton(enable = true) {
+   	console.log(`Enable = ${enable}`);
+   		if(enable) {
+          	$('#module_name + .input-group-btn > button > span')
+		    	.addClass('glyphicon glyphicon-search')
+		    	.removeClass('fa fa-circle-o-notch fa-spin fa-fw');
+          	$('#module_name + .input-group-btn>button').prop('disabled', false);
+   		} else {
+			$('#module_name + .input-group-btn > button > span')
+ 				.removeClass('glyphicon glyphicon-search')
+  				.addClass('fa fa-circle-o-notch fa-spin fa-fw');
+		 	$('#module_name + .input-group-btn>button').prop('disabled', true);
+   		}
+   }
 
   	jQuery(document).ready(function($){
 		function updatePlanModal() {

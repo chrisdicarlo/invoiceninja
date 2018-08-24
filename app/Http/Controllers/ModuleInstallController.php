@@ -29,6 +29,8 @@ class ModuleInstallController extends BaseController
 
         $exitCode = \Artisan::call('module:install', ['name' => $moduleName, '--type' => 'github-https']);
 
-        return \Artisan::output();
+        $returnData = array($moduleName, $exitCode, \Artisan::output());
+
+        return $returnData;
     }
 }
