@@ -175,7 +175,32 @@ return [
     'register' => [
         'translations' => true,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Define any dynamic relations.
+    | This should be empty normally; custom modules will merge a
+    | configuration into this array.
+    |--------------------------------------------------------------------------
+    */
     'relations' => [
         //  all dynamic relations registered from modules are added here
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Define any typeahead configurations.
+    | This contains the fields to use for specific typeahead fields.
+    | Custom modules are free to merge additional fields to allow them to
+    | be included in the search filter.
+    |--------------------------------------------------------------------------
+    */
+    'typeaheads' => [
+        'product' => [
+            'product_key',
+            'notes',
+            'custom_value1',
+            'custom_value1',
+        ],
     ],
 ];
