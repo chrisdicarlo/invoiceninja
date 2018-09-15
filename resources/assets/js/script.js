@@ -1173,7 +1173,7 @@ function searchData(data, key, fuzzy, secondKey) {
     var matches, substringRegex;
     if (fuzzy) {
         var options = {
-          keys: [key],
+          keys: key.constructor === Array ? key : [key],
         }
         var fuse = new Fuse(data, options);
         matches = fuse.search(q);

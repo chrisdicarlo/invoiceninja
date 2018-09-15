@@ -1029,6 +1029,7 @@ ko.bindingHandlers.productTypeahead = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
         var $element = $(element);
         var allBindings = allBindingsAccessor();
+        let keys = allBindings.key.split(',');
 
         $element.typeahead({
             highlight: true,
@@ -1036,7 +1037,7 @@ ko.bindingHandlers.productTypeahead = {
         },
         {
             name: 'data',
-            display: allBindings.key,
+            display: allBindings.displayKey,
             limit: 50,
             templates: {
                 suggestion: function(item) { return '<div title="' + _.escape(item.notes) + '" style="border-bottom: solid 1px #CCC">'
@@ -1044,7 +1045,8 @@ ko.bindingHandlers.productTypeahead = {
                     + roundToTwo(item.cost, true) + ' • '
                     + _.escape(item.notes.substring(0, 100)) + '</div>' }
             },
-            source: searchData(allBindings.items, allBindings.key, false, 'notes')
+            // source: searchData(allBindings.items, allBindings.key, false, 'notes')
+            source: searchData(allBindings.items, keys, true, null)
         }).on('typeahead:select', function(element, datum, name) {
             @if (Auth::user()->account->fill_products)
                 var model = ko.dataFor(this);

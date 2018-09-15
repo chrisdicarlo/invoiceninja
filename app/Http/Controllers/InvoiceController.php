@@ -232,6 +232,7 @@ class InvoiceController extends BaseController
             'method' => 'POST',
             'url' => 'invoices',
             'title' => trans('texts.new_invoice'),
+            'productTypeaheadKeys' => implode(',',config()->get('modules.typeaheads.product')),
         ];
         $data = array_merge($data, self::getViewModel($invoice));
 
@@ -327,10 +328,23 @@ class InvoiceController extends BaseController
             }
         }
 
+        $products = Product::scope()->orderBy('product_key')->get();
+        
+        $productSearchKeys = config()->get('modules.typeaheads.product');
+
+        foreach($productSearchKeys as $key) {
+            // check for '.' delimiter that indicates a relation
+            $str = strstr($key, '.', true);
+
+            if($str) {
+                $products->load(camel_case($str));
+            }
+        }
+
         return [
             'data' => Input::old('data'),
             'account' => Auth::user()->account->load('country'),
-            'products' => Product::scope()->orderBy('product_key')->get(),
+            'products' => $products,
             'taxRateOptions' => $taxRateOptions,
             'sizes' => Cache::get('sizes'),
             'invoiceDesigns' => InvoiceDesign::getDesigns(),
