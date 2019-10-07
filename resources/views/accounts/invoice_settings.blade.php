@@ -57,6 +57,9 @@
                         <a href="#credit_number" aria-controls="credit_number" role="tab" data-toggle="tab">{{ trans('texts.credit_number') }}</a>
                     </li>
                     <li role="presentation">
+                        <a href="#project_number" aria-controls="options" role="tab" data-toggle="tab">{{ trans('texts.project_number') }}</a>
+                    </li>
+                    <li role="presentation">
                         <a href="#options" aria-controls="options" role="tab" data-toggle="tab">{{ trans('texts.options') }}</a>
                     </li>
                 </ul>
@@ -184,6 +187,42 @@
                                     ->addGroupClass('pad-checkbox')
                                     ->help(trans('texts.credit_number_help') . ' ' .
                                         trans('texts.next_credit_number', ['number' => $account->getNextNumber(new \App\Models\Credit()) ?: '0001'])) !!}
+                        </div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="project_number">
+                                  <div class="panel-body">
+
+                        {!! Former::checkbox('project_number_enabled')
+                                ->label('project_number')
+                                ->onchange('onProjectNumberEnabled()')
+                                ->text('enable')
+                                ->value(1)
+                                ->check($account->project_number_counter > 0) !!}
+
+                        <div id="projectNumberDiv" style="display:none">
+
+                            {!! Former::inline_radios('project_number_type')
+                                    ->onchange("onNumberTypeChange('project')")
+                                    ->label(trans('texts.type'))
+                                    ->radios([
+                                        trans('texts.prefix') => ['value' => 'prefix', 'name' => 'project_number_type'],
+                                        trans('texts.pattern') => ['value' => 'pattern', 'name' => 'project_number_type'],
+                                    ])->check($account->project_number_pattern ? 'pattern' : 'prefix') !!}
+
+                            {!! Former::text('project_number_prefix')
+                                    ->addGroupClass('project-prefix')
+                                    ->label(trans('texts.prefix')) !!}
+                            {!! Former::text('project_number_pattern')
+                                    ->appendIcon('question-sign')
+                                    ->addGroupClass('project-pattern')
+                                    ->addGroupClass('project-number-pattern')
+                                    ->label(trans('texts.pattern')) !!}
+                            {!! Former::text('project_number_counter')
+                                    ->label(trans('texts.counter'))
+                                    ->addGroupClass('pad-checkbox')
+                                    ->help(trans('texts.project_number_help') . ' ' .
+                                        trans('texts.next_project_number', ['number' => $account->getNextNumber(new \App\Models\Project()) ?: '0001'])) !!}
                         </div>
                     </div>
                 </div>
@@ -597,6 +636,17 @@
         } else {
             $('#creditNumberDiv').hide();
             $('#credit_number_counter').val(0);
+        }
+    }
+
+    function onProjectNumberEnabled() {
+        var enabled = $('#project_number_enabled').is(':checked');
+        if (enabled) {
+            $('#projectNumberDiv').show();
+            $('#project_number_counter').val({{ $account->project_number_counter ?: 1 }});
+        } else {
+            $('#projectNumberDiv').hide();
+            $('#project_number_counter').val(0);
         }
     }
 

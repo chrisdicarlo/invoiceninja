@@ -3198,6 +3198,9 @@ $LANG = array(
     'view_website' => 'View Website',
     'create_account' => 'Create Account',
     'email_login' => 'Email Login',
+    'project_number' => 'Project Number',
+    'project_number_help' => 'Specify a prefix or use a custom pattern to dynamically set the project number.',
+    'next_project_number' => 'The next project number is :number.',
 );
 
 return $LANG;
