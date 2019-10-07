@@ -89,6 +89,10 @@
         <div class="col-md-4">
             <h3>{{ trans('texts.summary') }}
 			<table class="table" style="width:100%">
+                <tr>
+                    <td><small>{{ trans('texts.invoiced_to_date') }}</small></td>
+                    <td style="text-align: right">{{ $invoicedToDate }}</td>
+                </tr>
 				<tr>
 					<td><small>{{ trans('texts.tasks') }}</small></td>
 					<td style="text-align: right">{{ $chartData->count }}</td>

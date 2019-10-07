@@ -54,7 +54,19 @@ class ProjectController extends BaseController
     {
         $account = auth()->user()->account;
         $project = $request->entity();
-        $chartData = dispatch_now(new GenerateProjectChartData($project));
+        $chartData = dispatch(new GenerateProjectChartData($project));
+        $invoicedToDate = $project
+            ->tasks()
+            ->with(['invoice.invoice_items' => function($query) {
+                $query->where('invoice_items.invoice_item_type_id', '=', INVOICE_ITEM_TYPE_TASK);
+            }])->whereNotNull('invoice_id')
+            // ->sum(function($invoiceItem) {
+            //     return $invoiceItem.qty * $invoiceItem.cost;
+            // })
+            //->where('invoice_item_type_id', '=', INVOICE_ITEM_TYPE_TASK)
+            ->get();
+                         dd($invoicedToDate);
+        //dump($invoicedToDate);
 
         $data = [
             'account' => auth()->user()->account,
@@ -62,6 +74,7 @@ class ProjectController extends BaseController
             'title' => trans('texts.view_project'),
             'showBreadcrumbs' => false,
             'chartData' => $chartData,
+            'invoicedToDate' => $invoicedToDate,
         ];
 
         return View::make('projects.show', $data);

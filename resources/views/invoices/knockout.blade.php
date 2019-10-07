@@ -312,6 +312,7 @@ function InvoiceModel(data) {
             itemModel.invoice_item_type_id({{ INVOICE_ITEM_TYPE_TASK }});
             self.invoice_items_with_tasks.push(itemModel);
         } else {
+            itemModel.invoice_item_type_id({{ INVOICE_ITEM_TYPE_STANDARD }});
             self.invoice_items_without_tasks.push(itemModel);
         }
         applyComboboxListeners();
@@ -843,7 +844,6 @@ function ItemModel(data) {
     self.expense_public_id = ko.observable('');
     self.invoice_item_type_id = ko.observable({{ INVOICE_ITEM_TYPE_STANDARD }});
     self.actionsVisible = ko.observable(false);
-
     self.isTask = ko.computed(function() {
         return self.invoice_item_type_id() == {{ INVOICE_ITEM_TYPE_TASK }};
     });

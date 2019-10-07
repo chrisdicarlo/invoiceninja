@@ -315,7 +315,7 @@
     <![endif]-->
 
     @yield('head')
-
+    @yield('custom_header')
 </head>
 
 <body class="body">
@@ -363,6 +363,8 @@
         window.open(url, '_blank');
     }
 </script>
+
+@yield('custom_footer')
 
 </body>
 
